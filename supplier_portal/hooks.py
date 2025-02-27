@@ -66,6 +66,9 @@ app_license = "mit"
 
 # Generators
 # ----------
+web_routes = [
+    {"from_route": "/supplier_portal", "to_route": "supplier_portal"},
+]
 
 # automatically create page for each record of this doctype
 # website_generators = ["Web Page"]

@@ -1,34 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supplier Portal</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body { background-color: #f8f9fa; }
-        .supplier-card {
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease-in-out;
-        }
-        .supplier-card:hover { transform: scale(1.03); }
-    </style>
-</head>
-<body>
-    <div class="container mt-5">
-        <h2 class="text-center text-primary">Supplier Dashboard</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card supplier-card p-3">
-                    <h5>Purchase Order: PUR-ORD-2025-00005</h5>
-                    <p class="text-muted">Date: February 27, 2025</p>
-                    <span class="badge bg-success">Completed</span>
-                    <p><strong>Item:</strong> Sneakers</p>
-                    <p><strong>Amount:</strong> ₹ 40,404.00</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+{% extends "templates/web.html" %}
+
+{% block title %}Supplier Portal{% endblock %}
+
+{% block page_content %}
+<style>
+    /* Sidebar Styles */
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        background-color: #FFFFFF; /* Light background */
+        color: black;
+        position: fixed;
+        left: 0;
+        top: 0;
+        padding-top: 20px;
+        border-right: 1px solid #ddd;
+    }
+    .sidebar a {
+        display: block;
+        color: black;
+        padding: 12px 15px;
+        text-decoration: none;
+        font-size: 16px;
+        margin: 5px;
+        border-radius: 5px;
+        transition: 0.3s;
+    }
+    .sidebar a:hover, .sidebar a.active {
+        background-color: #f1f1f1; /* Highlight on hover */
+        font-weight: bold;
+    }
+    /* Main Content */
+    .content {
+        margin-left: 270px; /* Space for sidebar */
+        padding: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    table, th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+    th {
+        background-color: #f9f9f9;
+    }
+</style>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h3 style="text-align: center;">Supplier Portal</h3>
+    <a href="{{ url }}/supplier_portal/?section=purchase_orders" {% if section == "purchase_orders" %}class="active"{% endif %}>📦 Purchase Orders</a>
+    <a href="{{ url }}?section=purchase_receipts" {% if section == "purchase_receipts" %}class="active"{% endif %}>📑 Purchase Receipts</a>
+    <a href="{{ url }}?section=purchase_requests" {% if section == "purchase_requests" %}class="active"{% endif %}>📝 Purchase Requests</a>
+    <a href="{{ url }}?section=asn" {% if section == "asn" %}class="active"{% endif %}>🚚 ASN</a>
+    <a href="{{ url }}?section=reports" {% if section == "reports" %}class="active"{% endif %}>📊 Reports</a>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+    <h2>Welcome to Supplier Portal</h2>
+    <p>Manage your purchase orders, receipts, and shipments here.</p>
+    
+    {% if section == "purchase_orders" %}
+        <h3>Purchase Orders</h3>
+        {% if purchase_orders %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>View</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for po in purchase_orders %}
+                <tr>
+                    <td>{{ po.name }}</td>
+                    <td>{{ po.transaction_date }}</td>
+                    <td>{{ po.status }}</td>
+                    <td>₹ {{ po.total }}</td>
+                    <td><a href="/supplier_portal/purchase-orders/{{ po.name }}">🔍 View</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No Purchase Orders found.</p>
+        {% endif %}
+    
+    {% elif section == "purchase_receipts" %}
+        <h3>Purchase Receipts</h3>
+        <p>Show purchase receipts here...</p>
+
+    {% elif section == "purchase_requests" %}
+        <h3>Purchase Requests</h3>
+        <p>Show purchase requests here...</p>
+
+    {% elif section == "asn" %}
+        <h3>ASN</h3>
+        <p>Show ASN details here...</p>
+
+    {% elif section == "reports" %}
+        <h3>Reports</h3>
+        <p>Show reports here...</p>
+
+    {% else %}
+        <p>Please select an option from the sidebar.</p>
+    {% endif %}
+</div>
+{% endblock %}
