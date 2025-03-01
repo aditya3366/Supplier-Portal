@@ -13,7 +13,7 @@ def get_context(context):
     po_id = frappe.form_dict.get("po_id", None)
 
     # If specific PO is requested, fetch its details
-    if po_id:
+    if po_id and section == "":
         purchase_order = frappe.get_doc("Purchase Order", po_id)
 
         # Fetch items table
@@ -30,6 +30,25 @@ def get_context(context):
 
         context.purchase_order = purchase_order
         context.section = "purchase_order_detail"
+        return
+
+    if po_id and section == "create_asn":
+        purchase_order = frappe.get_doc("Purchase Order", po_id)
+
+        # Fetch items table
+        purchase_order.items = frappe.get_all(
+            "Purchase Order Item",
+            filters={"parent": po_id},
+            fields=["item_code", "item_name", "qty", "rate", "amount"]
+        )
+
+        # Format date
+        purchase_order.transaction_date = frappe.utils.format_date(
+            purchase_order.transaction_date, "dd-MM-yyyy"
+        )
+
+        context.purchase_order = purchase_order
+        context.section = "create_asn"
         return
 
     purchase_orders = []
