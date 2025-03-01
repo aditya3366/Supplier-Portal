@@ -12,10 +12,16 @@
         color: black;
         position: fixed;
         left: 0;
-        top: 0;
-        padding-top: 20px;
+        top: 50px;
+        padding-top: 0px;
         border-right: 1px solid #ddd;
+        border-top: 1px solid #ddd;
     }
+    .sidebar h3 {
+    text-align: center;
+    margin: 0; /* Remove any default margin */
+    padding: 15px 0; /* Optional padding for spacing */
+}
     .sidebar a {
         display: block;
         color: black;
@@ -23,9 +29,10 @@
         text-decoration: none;
         font-size: 16px;
         margin: 5px;
-        border-radius: 5px;
+        top:0px;
+        border-radius: 8px;
         transition: 0.3s;
-    }
+    } 
     .sidebar a:hover, .sidebar a.active {
         background-color: #f1f1f1; /* Highlight on hover */
         font-weight: bold;
@@ -62,9 +69,6 @@
 
 <!-- Main Content -->
 <div class="content">
-    <h2>Welcome to Supplier Portal</h2>
-    <p>Manage your purchase orders, receipts, and shipments here.</p>
-    
     {% if section == "purchase_orders" %}
         <h3>Purchase Orders</h3>
         {% if purchase_orders %}
@@ -85,7 +89,8 @@
                     <td>{{ po.transaction_date }}</td>
                     <td>{{ po.status }}</td>
                     <td>₹ {{ po.total }}</td>
-                    <td><a href="/supplier_portal/purchase-orders/{{ po.name }}">🔍 View</a></td>
+                    <td><a href="{{ url }}/supplier_portal/?po_id={{ po.name }}">🔍 View</a></td>
+
                 </tr>
                 {% endfor %}
             </tbody>
@@ -110,8 +115,55 @@
         <h3>Reports</h3>
         <p>Show reports here...</p>
 
+    {% elif section == "purchase_order_detail" %}
+    <div class="container mt-4">
+        <h3 class="text-primary">Purchase Order Details</h3>
+        <div class="card p-4 mb-4 shadow-sm bg-light border rounded">
+            <p><strong>Order ID:</strong> {{ purchase_order.name }}</p>
+            <p><strong>Supplier:</strong> {{ purchase_order.supplier }}</p>
+            <p><strong>Transaction Date:</strong> {{ purchase_order.transaction_date }}</p>
+            <p><strong>Status:</strong> {{ purchase_order.status }}</p>
+        </div>
+
+        <h4 class="text-secondary">Items</h4>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover border rounded shadow-sm">
+                <thead class="bg-dark text-black">
+                    <tr>
+                        <th>Item Code</th>
+                        <th>Item Name</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-end">Rate</th>
+                        <th class="text-end">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in purchase_order.items %}
+                    <tr>
+                        <td>{{ item.item_code }}</td>
+                        <td>{{ item.item_name }}</td>
+                        <td class="text-center">{{ item.qty }}</td>
+                        <td class="text-end">₹ {{ item.rate }}</td>
+                        <td class="text-end fw-bold">₹ {{ item.amount }}</td>
+                    </tr>
+                   
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div>
+    <p class="text-success fw-bold" style="text-align: right;margin: 20px;"><strong>Total : </strong> ₹ {{ purchase_order.total }}</p>
+</div>
+
+        </div>
+    </div>
+
+    <a href="{{ url }}/supplier_portal/?section=purchase_orders" class="btn btn-primary">🔙 Back to Purchase Orders</a>
+
+
     {% else %}
-        <p>Please select an option from the sidebar.</p>
+        <p>
+            <h2 style="color: #007bff; font-size: 35px;text-align: center; font-weight: bold;">Welcome to Supplier Portal</h2>
+        </p>
     {% endif %}
 </div>
 {% endblock %}

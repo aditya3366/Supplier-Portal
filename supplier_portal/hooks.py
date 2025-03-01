@@ -20,9 +20,12 @@ app_license = "mit"
 # 		"has_permission": "supplier_portal.api.permission.has_app_permission"
 # 	}
 # ]
-
+override_whitelisted_methods = {
+    "frappe.website.utils.get_website_sidebar": "supplier_portal.overrides.override_supplier_sidebar"
+}
 # Includes in <head>
 # ------------------
+on_session_creation = "supplier_portal.utils.custom_redirect"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/supplier_portal/css/supplier_portal.css"
