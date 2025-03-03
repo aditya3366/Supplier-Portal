@@ -53,7 +53,7 @@
         text-align: left;
     }
     th {
-        background-color: #f9f9f9;
+        background-color: #E5E5E5;
     }
 </style>
 
@@ -61,16 +61,62 @@
 <div class="sidebar">
     <h3 style="text-align: center;">Supplier Portal</h3>
     <a href="{{ url }}/supplier_portal/?section=purchase_orders" {% if section == "purchase_orders" %}class="active"{% endif %}>📦 Purchase Orders</a>
-    <a href="{{ url }}?section=purchase_receipts" {% if section == "purchase_receipts" %}class="active"{% endif %}>📑 Purchase Receipts</a>
-    <a href="{{ url }}?section=purchase_requests" {% if section == "purchase_requests" %}class="active"{% endif %}>📝 Purchase Requests</a>
-    <a href="{{ url }}?section=asn" {% if section == "asn" %}class="active"{% endif %}>🚚 ASN</a>
-    <a href="{{ url }}?section=reports" {% if section == "reports" %}class="active"{% endif %}>📊 Reports</a>
+    <a href="{{ url }}/supplier_portal/?section=purchase_receipts" {% if section == "purchase_receipts" %}class="active"{% endif %}>📑 Purchase Receipts</a>
+    <a href="{{ url }}/supplier_portal/?section=purchase_requests" {% if section == "purchase_requests" %}class="active"{% endif %}>📝 Purchase Requests</a>
+    <a href="{{ url }}/supplier_portal/?section=asn" {% if section == "asn" %}class="active"{% endif %}>🚚 ASN</a>
+    <a href="{{ url }}/supplier_portal/?section=reports" {% if section == "reports" %}class="active"{% endif %}>📊 Reports</a>
 </div>
 
 <!-- Main Content -->
 <div class="content">
     {% if section == "purchase_orders" %}
-        <h3>Purchase Orders</h3>
+        <!-- <h3>Purchase Orders</h3> -->
+        <h3 class="fw-bold" style="color: #414141;"><strong>Purchase Orders</strong></h3>
+
+        <!-- =========================================================================================================================== -->
+        
+        <!-- SUMMARY CARDS -->
+        <div class="d-flex gap-3">
+            <!-- Total Purchase Orders Card -->
+            <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" 
+                 style="width: 150px; height: 105px; margin-right: 10px; background: rgba(56, 162, 229, 0.1);">
+                <div class="me-3">
+                    <i class="fa fa-shopping-cart text-primary" style="font-size: 24px;"></i>
+                </div>
+                <div>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Total Purchase Orders</p>
+                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #008ED4;">{{ total_pos }}</p>
+                </div>
+            </div>
+            
+            <!-- Total Completed Orders Card -->
+            <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" 
+                 style="width: 150px; height: 105px; margin-right: 10px; background: rgba(16, 200, 1, 0.1);">
+                <div class="me-3">
+                    <i class="fa fa-dollar-sign text-success" style="font-size: 24px;"></i>
+                </div>
+                <div>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Total Completed Purchase Orders</p>
+                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #19C401;">{{ total_completed_po }}</p>
+                </div>
+            </div>
+            
+            <!-- Total Pending Orders Card -->
+            <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" 
+                 style="width: 150px; height: 105px; margin-right: 10px; background: rgba(231, 51, 51, 0.1);">
+                <div class="me-3">
+                    <i class="fa fa-dollar-sign text-danger" style="font-size: 24px;"></i>
+                </div>
+                <div>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Total Pending Purchase Orders</p>
+                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #E91818;">{{ total_incomplete_po }}</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- =========================================================================================================================== -->
+        
         {% if purchase_orders %}
         <table>
             <thead>
@@ -88,11 +134,11 @@
                     <td>{{ po.name }}</td>
                     <td>{{ po.transaction_date }}</td>
                     <td>{{ po.status }}</td>
-                    <td>₹ {{ po.total }}</td>
+                    <td>₹ {{ po.grand_total }}</td>
                     <td>
                         <!-- <a href="{{ url }}/supplier_portal/?po_id={{ po.name }}"  -->
                         <a href="{{ url }}/supplier_portal/?po_id={{ po.name }}" 
-                           style="display: inline-block; padding: 4px 9px; background-color: #007bff; color: white;text-decoration: none; border-radius: 5px; border: none; cursor: pointer;">
+                           style="display: inline-block; padding: 4px 9px; background-color: #3F95F1; color: white;text-decoration: none; border-radius: 5px; border: none; cursor: pointer;">
                             View Details
                         </a>
                     </td>
@@ -105,23 +151,89 @@
         {% else %}
             <p>No Purchase Orders found.</p>
         {% endif %}
-    
-    {% elif section == "purchase_receipts" %}
-        <h3>Purchase Receipts</h3>
-        <p>Show purchase receipts here...</p>
 
+    <!-- =========================================================================================================================== -->
+    <!-- =========================================================================================================================== -->
+        
+    {% elif section == "purchase_receipts" %}
+        <h3 class="fw-bold" style="color: #414141;"><strong>Purchase Receipts</strong></h3>
+
+        <!-- =========================================================================================================================== -->
+        
+        <!-- SUMMARY CARDS -->
+        <div class="d-flex gap-3">
+            <!-- Total Purchase Orders Card -->
+            <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" 
+                 style="width: 150px; height: 105px; margin-right: 10px; background: rgba(56, 162, 229, 0.1);">
+                <div class="me-3">
+                    <i class="fa fa-shopping-cart text-primary" style="font-size: 24px;"></i>
+                </div>
+                <div>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Total Purchase Receipts</p>
+                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #008ED4;">{{ total_prs }}</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- =========================================================================================================================== -->
+        
+        {% if purchase_receipts %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>View</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pr in purchase_receipts %}
+                <tr>
+                    <td>{{ pr.name }}</td>
+                    <td>{{ pr.posting_date }}</td>
+                    <td>{{ pr.status }}</td>
+                    <td>₹ {{ pr.grand_total }}</td>
+                    <td>
+                        <a href="{{ url }}/supplier_portal/?pr_id={{ pr.name }}" 
+                           style="display: inline-block; padding: 4px 9px; background-color: #3F95F1; color: white;text-decoration: none; border-radius: 5px; border: none; cursor: pointer;">
+                            View Details
+                        </a>
+                    </td>
+
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No Purchase Requests found.</p>
+        {% endif %}
+
+    <!-- =========================================================================================================================== -->
+    <!-- =========================================================================================================================== -->
+        
     {% elif section == "purchase_requests" %}
         <h3>Purchase Requests</h3>
         <p>Show purchase requests here...</p>
 
+    <!-- =========================================================================================================================== -->
+    <!-- =========================================================================================================================== -->
+        
     {% elif section == "asn" %}
         <h3>ASN</h3>
         <p>Show ASN details here...</p>
-
+    <!-- =========================================================================================================================== -->
+    <!-- =========================================================================================================================== -->
+        
     {% elif section == "reports" %}
         <h3>Reports</h3>
         <p>Show reports here...</p>
-
+    <!-- =========================================================================================================================== -->
+    <!-- =========================================================================================================================== -->
+        
     {% elif section == "purchase_order_detail" %}
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <!-- Back Button (←) -->
@@ -168,15 +280,17 @@
                     </tbody>
                 </table>
                 <div>
-                    <p class="text-success fw-bold" style="text-align: right;margin: 20px;"><strong>Total : </strong> ₹         {{purchase_order.total }}</p>
+                    <p class="text-success fw-bold" style="text-align: right;margin: 20px;"><strong>Net Total : </strong> ₹         {{purchase_order.total }}</p>
                 </div>
-    
+                <div>
+                    <p class="text-success fw-bold" style="text-align: right;margin: 20px;"><strong>Grand Total : </strong> ₹         {{purchase_order.grand_total }}</p>
+                </div>
             </div>
         </div>
 
-
-
-
+    <!-- =========================================================================================================================== -->
+    <!-- =========================================================================================================================== -->
+        
     {% elif section == "create_asn" %}
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <!-- Back Button (←) -->
@@ -187,7 +301,7 @@
 
 
         </div>
-        
+
         <!-- FUNCTION CREATE ANS -->
         <script>
             function createASN(po_id) {
@@ -222,6 +336,7 @@
                             <th>Item Code</th>
                             <th>Item Name</th>
                             <th class="text-center">Ordered Quantity</th>
+                            <!-- <th class="text-center">Received Quantity</th> -->
                             <th class="text-center">Shipping Qty</th>
                         </tr>
                     </thead>
@@ -231,8 +346,10 @@
                             <td>{{ item.item_code }}</td>
                             <td>{{ item.item_name }}</td>
                             <td class="text-center">{{ item.qty }}</td>
+                            <!-- <td class="text-center">{{ item.received_qty or 0 }}</td> -->
                             <td class="text-center">
-                                <input type="text" class="form-control text-center" name="shipped_qty" >
+                                <input type="text" class="form-control text-center" name="shipped_qty" 
+                                style="border: 1px solid #BCBCBC ; color: #333;">
                             </td>
                         </tr>
                         {% endfor %}
@@ -240,9 +357,6 @@
                 </table>
             </div>
         </div>
-
-
-
 
     {% else %}
         <p>
