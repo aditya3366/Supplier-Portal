@@ -129,11 +129,9 @@
                class="btn btn-light text-secondary">←</a>
         
             <!-- Create ASN Button (Right-Aligned) -->
-            <a href="{{ url }}/supplier_portal/?section=create_asn" 
+            <a href="{{ url }}/supplier_portal/?section=create_asn&po_id={{ purchase_order.name }}" 
                class="btn btn-primary">Create ASN</a>
         </div>
-    
-    
     
         <div class="container mt-4">
             <h3 class="text-primary">Purchase Order Details</h3>
@@ -182,12 +180,65 @@
     {% elif section == "create_asn" %}
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <!-- Back Button (←) -->
-            <a href="{{ url }}/supplier_portal/?section=purchase_orders" 
+            <a href="{{ url }}/supplier_portal/?po_id={{ purchase_order.name }}" 
                class="btn btn-light text-secondary">←</a>
+
+            <button class="btn btn-primary" onclick="createASN('{{ purchase_order.name }}')">Submit</button>
+
+
         </div>
+        
+        <!-- FUNCTION CREATE ANS -->
+        <script>
+            function createASN(po_id) {
+                frappe.call({
+                    method: "supplier_portal.www.supplier_portal.index.create_asn",
+                    args: {
+                        po_id: po_id
+                    },
+                    callback: function(response) {
+                        if (response.message) {
+                            frappe.msgprint("ASN created successfully!");
+                        }
+                    }
+                });
+            }
+        </script>
 
         <div class="container mt-4">
             <h3 class="text-primary">Create ASN</h3>
+            <div class="card p-4 mb-4 shadow-sm bg-light border rounded">
+                <p><strong>Order ID:</strong> {{ purchase_order.name }}</p>
+                <p><strong>Supplier:</strong> {{ purchase_order.supplier }}</p>
+                <p><strong>Transaction Date:</strong> {{ purchase_order.transaction_date }}</p>
+                <p><strong>Status:</strong> {{ purchase_order.status }}</p>
+            </div>
+    
+            <h4 class="text-primary">Items</h4>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover border rounded shadow-sm">
+                    <thead class="bg-dark text-black">
+                        <tr>
+                            <th>Item Code</th>
+                            <th>Item Name</th>
+                            <th class="text-center">Ordered Quantity</th>
+                            <th class="text-center">Shipping Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in purchase_order.items %}
+                        <tr>
+                            <td>{{ item.item_code }}</td>
+                            <td>{{ item.item_name }}</td>
+                            <td class="text-center">{{ item.qty }}</td>
+                            <td class="text-center">
+                                <input type="text" class="form-control text-center" name="shipped_qty" >
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
 
@@ -200,3 +251,7 @@
     {% endif %}
 </div>
 {% endblock %}
+
+<!-- ======================================================================================================================================= -->
+<!-- ======================================================================================================================================= -->
+
