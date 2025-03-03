@@ -78,6 +78,17 @@ def get_context(context):
             for po in purchase_orders:
                 po["transaction_date"] = frappe.utils.format_date(po["transaction_date"], "dd-MM-yyyy")
 
+
     context.section = section
     context.purchase_orders = purchase_orders
     context.url = frappe.utils.get_url()
+
+##-----------------------------------------------------------------------------------------------------------------------------------------------
+
+@frappe.whitelist()
+def create_asn(po_id):
+    # Your logic here (e.g., create ASN, update records, etc.)
+    doc = frappe.get_doc("Purchase Order", po_id)
+    # Perform necessary actions
+    return frappe.msgprint(f"ASN created for {po_id}")
+
