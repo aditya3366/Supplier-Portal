@@ -12,20 +12,20 @@
         color: black;
         position: fixed;
         left: 0;
-        top: 50px;
+        top: 48px;
         padding-top: 0px;
         border-right: 1px solid #ddd;
         border-top: 1px solid #ddd;
     }
     .sidebar h3 {
-    text-align: center;
-    margin: 0; /* Remove any default margin */
-    padding: 15px 0; /* Optional padding for spacing */
-}
+        text-align: center;
+        margin: 0; /* Remove any default margin */
+        padding: 15px 0; /* Optional padding for spacing */
+    }
     .sidebar a {
         display: block;
         color: black;
-        padding: 12px 15px;
+        padding: 9px 12px;
         text-decoration: none;
         font-size: 16px;
         margin: 5px;
@@ -39,8 +39,8 @@
     }
     /* Main Content */
     .content {
-        margin-left: 270px; /* Space for sidebar */
-        padding: 20px;
+        margin-left: 180px; /* Space for sidebar */
+        padding: 10px;
     }
     table {
         width: 100%;
@@ -89,7 +89,14 @@
                     <td>{{ po.transaction_date }}</td>
                     <td>{{ po.status }}</td>
                     <td>₹ {{ po.total }}</td>
-                    <td><a href="{{ url }}/supplier_portal/?po_id={{ po.name }}">🔍 View</a></td>
+                    <td>
+                        <!-- <a href="{{ url }}/supplier_portal/?po_id={{ po.name }}"  -->
+                        <a href="{{ url }}/supplier_portal/?po_id={{ po.name }}" 
+                           style="display: inline-block; padding: 4px 9px; background-color: #007bff; color: white;text-decoration: none; border-radius: 5px; border: none; cursor: pointer;">
+                            View Details
+                        </a>
+                    </td>
+
 
                 </tr>
                 {% endfor %}
@@ -116,48 +123,74 @@
         <p>Show reports here...</p>
 
     {% elif section == "purchase_order_detail" %}
-    <div class="container mt-4">
-        <h3 class="text-primary">Purchase Order Details</h3>
-        <div class="card p-4 mb-4 shadow-sm bg-light border rounded">
-            <p><strong>Order ID:</strong> {{ purchase_order.name }}</p>
-            <p><strong>Supplier:</strong> {{ purchase_order.supplier }}</p>
-            <p><strong>Transaction Date:</strong> {{ purchase_order.transaction_date }}</p>
-            <p><strong>Status:</strong> {{ purchase_order.status }}</p>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <!-- Back Button (←) -->
+            <a href="{{ url }}/supplier_portal/?section=purchase_orders" 
+               class="btn btn-light text-secondary">←</a>
+        
+            <!-- Create ASN Button (Right-Aligned) -->
+            <a href="{{ url }}/supplier_portal/?section=create_asn" 
+               class="btn btn-primary">Create ASN</a>
+        </div>
+    
+    
+    
+        <div class="container mt-4">
+            <h3 class="text-primary">Purchase Order Details</h3>
+            <div class="card p-4 mb-4 shadow-sm bg-light border rounded">
+                <p><strong>Order ID:</strong> {{ purchase_order.name }}</p>
+                <p><strong>Supplier:</strong> {{ purchase_order.supplier }}</p>
+                <p><strong>Transaction Date:</strong> {{ purchase_order.transaction_date }}</p>
+                <p><strong>Status:</strong> {{ purchase_order.status }}</p>
+            </div>
+    
+            <h4 class="text-primary">Items</h4>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover border rounded shadow-sm">
+                    <thead class="bg-dark text-black">
+                        <tr>
+                            <th>Item Code</th>
+                            <th>Item Name</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-end">Rate</th>
+                            <th class="text-end">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in purchase_order.items %}
+                        <tr>
+                            <td>{{ item.item_code }}</td>
+                            <td>{{ item.item_name }}</td>
+                            <td class="text-center">{{ item.qty }}</td>
+                            <td class="text-end">₹ {{ item.rate }}</td>
+                            <td class="text-end fw-bold">₹ {{ item.amount }}</td>
+                        </tr>
+                       
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div>
+                    <p class="text-success fw-bold" style="text-align: right;margin: 20px;"><strong>Total : </strong> ₹         {{purchase_order.total }}</p>
+                </div>
+    
+            </div>
         </div>
 
-        <h4 class="text-secondary">Items</h4>
-        <div class="table-responsive">
-            <table class="table table-striped table-hover border rounded shadow-sm">
-                <thead class="bg-dark text-black">
-                    <tr>
-                        <th>Item Code</th>
-                        <th>Item Name</th>
-                        <th class="text-center">Quantity</th>
-                        <th class="text-end">Rate</th>
-                        <th class="text-end">Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in purchase_order.items %}
-                    <tr>
-                        <td>{{ item.item_code }}</td>
-                        <td>{{ item.item_name }}</td>
-                        <td class="text-center">{{ item.qty }}</td>
-                        <td class="text-end">₹ {{ item.rate }}</td>
-                        <td class="text-end fw-bold">₹ {{ item.amount }}</td>
-                    </tr>
-                   
-                    {% endfor %}
-                </tbody>
-            </table>
-            <div>
-    <p class="text-success fw-bold" style="text-align: right;margin: 20px;"><strong>Total : </strong> ₹ {{ purchase_order.total }}</p>
-</div>
 
+
+
+    {% elif section == "create_asn" %}
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <!-- Back Button (←) -->
+            <a href="{{ url }}/supplier_portal/?section=purchase_orders" 
+               class="btn btn-light text-secondary">←</a>
         </div>
-    </div>
 
-    <a href="{{ url }}/supplier_portal/?section=purchase_orders" class="btn btn-primary">🔙 Back to Purchase Orders</a>
+        <div class="container mt-4">
+            <h3 class="text-primary">Create ASN</h3>
+        </div>
+
+
 
 
     {% else %}
