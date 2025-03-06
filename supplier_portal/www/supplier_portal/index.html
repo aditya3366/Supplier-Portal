@@ -5,43 +5,65 @@
 {% block page_content %}
 <style>
     /* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #FFFFFF;
+    color: black;
+    position: fixed;
+    left: 0;
+    top: 48px;
+    padding-top: 0px;
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Main Content */
+.content {
+    margin-left: 250px; /* Adjust for sidebar */
+    padding: 10px;
+    transition: margin 0.3s ease;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
     .sidebar {
-        width: 250px;
-        height: 100vh;
-        background-color: #FFFFFF; /* Light background */
-        color: black;
-        position: fixed;
-        left: 0;
-        top: 48px;
-        padding-top: 0px;
-        border-right: 1px solid #ddd;
-        border-top: 1px solid #ddd;
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: 0;
+        padding-bottom: 10px;
     }
+    
     .sidebar h3 {
         text-align: center;
-        margin: 0; /* Remove any default margin */
-        padding: 15px 0; /* Optional padding for spacing */
-    }
-    .sidebar a {
-        display: block;
-        color: black;
-        padding: 9px 12px;
-        text-decoration: none;
-        font-size: 16px;
-        margin: 5px;
-        top:0px;
-        border-radius: 8px;
-        transition: 0.3s;
-    } 
-    .sidebar a:hover, .sidebar a.active {
-        background-color: #f1f1f1; /* Highlight on hover */
-        font-weight: bold;
-    }
-    /* Main Content */
-    .content {
-        margin-left: 180px; /* Space for sidebar */
         padding: 10px;
     }
+
+    .sidebar a {
+        display: block;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .d-flex {
+        flex-direction: column;
+    }
+
+    .shadow-sm {
+        width: 100% !important;
+        height: auto !important;
+        margin-bottom: 10px;
+    }
+}
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -59,12 +81,12 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <h3 style="text-align: center;">Supplier Portal</h3>
-    <a href="{{ url }}/supplier_portal/?section=purchase_orders" {% if section == "purchase_orders" %}class="active"{% endif %}>📦 Purchase Orders</a>
-    <a href="{{ url }}/supplier_portal/?section=purchase_receipts" {% if section == "purchase_receipts" %}class="active"{% endif %}>📑 Purchase Receipts</a>
-    <a href="{{ url }}/supplier_portal/?section=purchase_requests" {% if section == "purchase_requests" %}class="active"{% endif %}>📝 Purchase Requests</a>
-    <a href="{{ url }}/supplier_portal/?section=asn" {% if section == "asn" %}class="active"{% endif %}>🚚 ASN</a>
-    <a href="{{ url }}/supplier_portal/?section=reports" {% if section == "reports" %}class="active"{% endif %}>📊 Reports</a>
+    <h3 style="text-align: center;">Supplier Portal</h3><br>    
+    <a href="{{ url }}/supplier_portal/?section=purchase_orders" {% if section == "purchase_orders" %}class="active"{% endif %}>📦 Purchase Orders</a><br>
+    <a href="{{ url }}/supplier_portal/?section=purchase_receipts" {% if section == "purchase_receipts" %}class="active"{% endif %}>📑 Purchase Receipts</a><br>
+    <a href="{{ url }}/supplier_portal/?section=purchase_requests" {% if section == "purchase_requests" %}class="active"{% endif %}>📝 Purchase Requests</a><br>
+    <a href="{{ url }}/supplier_portal/?section=asn" {% if section == "asn" %}class="active"{% endif %}>🚚 ASN</a><br>
+    <a href="{{ url }}/supplier_portal/?section=reports" {% if section == "reports" %}class="active"{% endif %}>📊 Reports</a><br>
 </div>
 
 <!-- Main Content -->
@@ -224,7 +246,37 @@
         
     {% elif section == "asn" %}
         <h3>ASN</h3>
-        <p>Show ASN details here...</p>
+        <p>
+            {% if section == "asn" %}
+                <h2>Advance Shipping Notifications</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>ASN ID</th>
+                            <th>Posting Date</th>
+                            <th>Status</th>
+                            <th>Purchase Order</th>
+                            <th>Supplier Invoice No</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for asn in asn_list %}
+                            <tr>
+                                <td><a href="/asn_detail?asn_id={{ asn.name }}">{{ asn.name }}</a></td>
+                                <td>{{ asn.posting_date }}</td>
+                                <td>{{ asn.status }}</td>
+                                <td>{{ asn.purchase_order }}</td>
+                                <td>{{ asn.supplier_invoice_no }}</td>
+                                <td><a href="{{ url }}/supplier_portal/?asn_id={{ asn.name }}">View</a></td>
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+    {% endif %}
+
+        </p>
     <!-- =========================================================================================================================== -->
     <!-- =========================================================================================================================== -->
         
@@ -289,55 +341,30 @@
         </div>
 
     <!-- =========================================================================================================================== -->
-    <!-- =========================================================================================================================== -->
+
+
+    {% elif section == "asn_details" %}
         
-    {% elif section == "create_asn" %}
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <!-- Back Button (←) -->
-            <a href="{{ url }}/supplier_portal/?po_id={{ purchase_order.name }}" 
-               class="btn btn-light text-secondary">←</a>
-
-            <button class="btn btn-primary" onclick="createASN('{{ purchase_order.name }}')">Submit</button>
-
-
-        </div>
-
-        <!-- FUNCTION CREATE ANS -->
-        <script>
-            function createASN(po_id) {
-                frappe.call({
-                    method: "supplier_portal.www.supplier_portal.index.create_asn",
-                    args: {
-                        po_id: po_id
-                    },
-                    callback: function(response) {
-                        if (response.message) {
-                            frappe.msgprint("ASN created successfully!");
-                        }
-                    }
-                });
-            }
-        </script>
-
+    
         <div class="container mt-4">
-            <h3 class="text-primary">Create ASN</h3>
+            <h3 class="text-primary">ASN Details</h3>
             <div class="card p-4 mb-4 shadow-sm bg-light border rounded">
-                <p><strong>Order ID:</strong> {{ purchase_order.name }}</p>
-                <p><strong>Supplier:</strong> {{ purchase_order.supplier }}</p>
-                <p><strong>Transaction Date:</strong> {{ purchase_order.transaction_date }}</p>
-                <p><strong>Status:</strong> {{ purchase_order.status }}</p>
+                <p><strong>Order ID:</strong> {{ asn.name }}</p>
+                <p><strong>Supplier:</strong> {{ asn.supplier }}</p>
+              <!--   <p><strong>Transaction Date:</strong> {{ purchase_order.transaction_date }}</p>
+                <p><strong>Status:</strong> {{ purchase_order.status }}</p> -->
             </div>
     
-            <h4 class="text-primary">Items</h4>
+            <!-- <h4 class="text-primary">Items</h4>
             <div class="table-responsive">
                 <table class="table table-striped table-hover border rounded shadow-sm">
                     <thead class="bg-dark text-black">
                         <tr>
                             <th>Item Code</th>
                             <th>Item Name</th>
-                            <th class="text-center">Ordered Quantity</th>
-                            <!-- <th class="text-center">Received Quantity</th> -->
-                            <th class="text-center">Shipping Qty</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-end">Rate</th>
+                            <th class="text-end">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -346,17 +373,279 @@
                             <td>{{ item.item_code }}</td>
                             <td>{{ item.item_name }}</td>
                             <td class="text-center">{{ item.qty }}</td>
-                            <!-- <td class="text-center">{{ item.received_qty or 0 }}</td> -->
-                            <td class="text-center">
-                                <input type="text" class="form-control text-center" name="shipped_qty" 
-                                style="border: 1px solid #BCBCBC ; color: #333;">
-                            </td>
+                            <td class="text-end">₹ {{ item.rate }}</td>
+                            <td class="text-end fw-bold">₹ {{ item.amount }}</td>
                         </tr>
+                       
                         {% endfor %}
                     </tbody>
                 </table>
+                <div>
+                    <p class="text-success fw-bold" style="text-align: right;margin: 20px;"><strong>Net Total : </strong> ₹         {{purchase_order.total }}</p>
+                </div>
+                <div>
+                    <p class="text-success fw-bold" style="text-align: right;margin: 20px;"><strong>Grand Total : </strong> ₹         {{purchase_order.grand_total }}</p>
+                </div>
+            </div> -->
+        </div>
+
+
+
+    <!-- =========================================================================================================================== -->
+        
+    {% elif section == "create_asn" %}
+        <div class="container mt-4">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <!-- Back Button -->
+                <a href="{{ url }}/supplier_portal/?po_id={{ purchase_order.name }}" class="btn btn-light text-secondary">←</a>
+                <!-- Submit ASN Button -->
+                <button type="submit" class="btn btn-success" form="asn-form">Submit ASN</button>
+            </div>
+
+            <form id="asn-form">
+                <input type="hidden" name="po_id" value="{{ purchase_order.name }}">
+
+                <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create ASN</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        .card {
+            border-radius: 12px;
+            border: none;
+        }
+
+        .card-header {
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .btn-custom {
+            background-color: #28a745;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .btn-custom:hover {
+            background-color: #218838;
+        }
+
+        .table th {
+            background-color: #007bff !important;
+            color: white !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(0, 123, 255, 0.1);
+            transition: 0.3s;
+        }
+
+        .form-control {
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container my-5">
+        <!-- Page Title -->
+        <h2 class="text-center text-primary fw-bold mb-4">Create ASN</h2>
+
+        <!-- Purchase Order Details Card -->
+        <div class="card shadow-lg">
+            <div class="card-header text-center">
+                <h5 class="mb-0">Purchase Order Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- First Column: Order Details -->
+                    <div class="col-md-6">
+                        <p class="mb-2"><strong><i class="fas fa-file-invoice"></i>Purchase Order:</strong> 
+                            <span class="text-muted">{{ purchase_order.name }}</span>
+                        </p>
+                        <p class="mb-2"><strong><i class="fas fa-user"></i> Supplier:</strong> 
+                            <span class="text-muted">{{ purchase_order.supplier }}</span>
+                        </p>
+                        <p class="mb-2"><strong><i class="fas fa-calendar-alt"></i> PO Date:</strong> 
+                            <span class="text-muted">{{ purchase_order.transaction_date }}</span>
+                        </p>
+                        <p class="mb-0"><strong><i class="fas fa-check-circle"></i>PO Status:</strong> 
+                            <span class="badge bg-primary">{{ purchase_order.status }}</span>
+                        </p>
+                    </div>
+
+                    <!-- Second Column: Invoice Details -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Invoice No:</strong></label>
+                            <input type="text" class="form-control" name="invoice_no" placeholder="Enter invoice number">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Invoice Date:</strong></label>
+                            <input type="date" class="form-control" name="invoice_date">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Supplier Invoice Scan Copy:</strong></label>
+                            <input type="file" class="form-control" name="supplier_invoice_scan_copy">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Items Table -->
+        <h4 class="text-primary mt-5"><i class="fas fa-box"></i> Items</h4>
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover border rounded shadow-sm">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Item Code</th>
+                                <th>Item Name</th>
+                                <th class="text-center">Ordered Quantity</th>
+                                <th class="text-center">Shipping Qty</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in purchase_order.items %}
+                            <tr>
+                                <td>{{ item.item_code }}</td>
+                                <td>{{ item.item_name }}</td>
+                                <td class="text-center">{{ item.qty }}</td>
+                                <td class="text-center">
+                                    <input type="number" class="form-control text-center" name="shipped_qty_{{ item.item_code }}" min="1" required>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-4">
+            <!-- <button class="btn btn-custom btn-lg"><i class="fas fa-paper-plane"></i> Submit</button> -->
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+        <script>
+            document.getElementById("asn-form").addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                let formData = new FormData(this);
+                let fileInput = document.querySelector('input[name="supplier_invoice_scan_copy"]');
+
+                if (!fileInput.files.length) {
+                    frappe.msgprint("Please upload a supplier invoice scan copy before submitting.");
+                    return;
+
+
+                }
+
+                // Show confirmation popup
+                frappe.confirm(
+                    __("Are you sure you want to submit this ASN? Please check if the shipping quantity is correct. Once submitted, you cannot change the quantity. If everything is correct, proceed.<br><br> \n\nक्या आप सुनिश्चित हैं कि आप इस ASN को सबमिट करना चाहते हैं? कृपया जांच लें कि शिपिंग मात्रा सही है। एक बार सबमिट करने के बाद, आप मात्रा बदल नहीं सकते। यदि सब कुछ सही है, तो आगे बढ़ें।"),
+                    function () {
+                        // User clicked Submit, proceed with file upload and ASN creation
+                        uploadFile(fileInput.files[0])
+                            .then((fileUrl) => {
+                                formData.append("supplier_invoice_scan_copy", fileUrl);
+                                createASN(formData);
+                            })
+                            .catch(() => {
+                                frappe.ui.Dialog()("File upload failed. Please try again.");
+                            });
+                    },
+                    
+                    __
+                );
+            });
+
+            async function uploadFile(file) {
+                return new Promise((resolve, reject) => {
+                    let uploadFormData = new FormData();
+                    uploadFormData.append("file", file);
+                    uploadFormData.append("is_private", 0); // Set to 1 for private files
+
+                    // Use frappe.ajax instead of frappe.call for file uploads
+                    $.ajax({
+                        url: "/api/method/upload_file",
+                        type: "POST",
+                        data: uploadFormData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            if (response.message && response.message.file_url) {
+                                resolve(response.message.file_url);
+                            } else {
+                                reject("Upload failed");
+                            }
+                        },
+                        error: function (xhr) {
+                            reject(xhr.responseText);
+                        }
+                    });
+                });
+            }
+
+            function createASN(formData) {
+                let data = { items: [] };
+
+                formData.forEach((value, key) => {
+                    if (key.startsWith("shipped_qty_")) {
+                        data.items.push({
+                            item_code: key.replace("shipped_qty_", ""),
+                            qty: value
+                        });
+                    } else {
+                        data[key] = value;
+                    }
+                });
+
+                frappe.call({
+                    method: "supplier_portal.www.supplier_portal.index.create_asn",
+                    args: { data: data },
+                    callback: function (response) {
+                        if (response.message) {
+                            frappe.msgprint("ASN created successfully!");
+                            location.reload();
+                        }
+                    }
+                });
+            }
+
+
+                
+
+                
+
+        </script>
+
 
     {% else %}
         <p>

@@ -140,12 +140,92 @@ def get_context(context):
     context.purchase_receipts = purchase_receipts
     context.url = frappe.utils.get_url()
 
+#-------------------------------------------------------------------------------------------------------------------------------------------------
+
+  
+    asn_list = []
+    if section == "asn":
+        supplier_list = frappe.db.sql(
+            """
+            SELECT DISTINCT parent 
+            FROM `tabPortal User` 
+            WHERE user = %s AND parenttype = 'Supplier'
+            """,
+            (frappe.session.user,),
+            as_list=True
+        )
+
+        supplier_list = [supplier[0] for supplier in supplier_list]
+
+        if supplier_list:
+            asn_list = frappe.get_all(
+                "Advance Shipment Notification",
+                fields=["name", "posting_date", "purchase_order", "supplier_invoice_no"],
+                filters={"supplier": ["in", supplier_list]},
+                order_by="posting_date DESC",
+                limit_page_length=100,
+                as_list=False
+            )
+
+            for asn in asn_list:
+                asn["posting_date"] = frappe.utils.format_date(asn["posting_date"], "dd-MM-yyyy")
+
+    ## Set context values
+    context.section = section
+    context.purchase_orders = purchase_orders
+    context.asn_list = asn_list
+    context.url = frappe.utils.get_url()
 ##-----------------------------------------------------------------------------------------------------------------------------------------------
 
+# @frappe.whitelist()
+# def create_asn(po_id):
+#     # Your logic here (e.g., create ASN, update records, etc.)
+#     doc = frappe.get_doc("Purchase Order", po_id)
+#     # Perform necessary actions
+#     return frappe.msgprint(f"ASN created for {po_id}")
+
 @frappe.whitelist()
-def create_asn(po_id):
-    # Your logic here (e.g., create ASN, update records, etc.)
-    doc = frappe.get_doc("Purchase Order", po_id)
-    # Perform necessary actions
-    return frappe.msgprint(f"ASN created for {po_id}")
+def create_asn(data):
+    data = frappe.parse_json(data)
+    po_id = data.get("po_id")
+    supplier_invoice_scan_copy = data.get("supplier_invoice_scan_copy")
+    invoice_no = data.get("invoice_no")
+    invoice_date = data.get("invoice_date")
+    
+    if not po_id:
+        return frappe.throw(_("Purchase Order ID is required"))
+    
+    # Create ASN document
+    asn = frappe.new_doc("Advance Shipment Notification")
+    asn.purchase_order = po_id
+    asn.supplier = frappe.get_value("Purchase Order", po_id, "supplier")
+    asn.supplier_invoice_no = invoice_no
+    asn.supplier_invoice_scan_copy = supplier_invoice_scan_copy
+    asn.invoice_date = invoice_date
+
+    if supplier_invoice_scan_copy:
+        file_doc = frappe.get_value("File", {"file_url": supplier_invoice_scan_copy}, "name")
+        if file_doc:
+            asn.supplier_invoice_scan_copy = supplier_invoice_scan_copy
+        else:
+            frappe.throw(_("Invalid file URL"))
+
+    # Add ASN items
+    if "items" in data and isinstance(data["items"], list):
+        for item in data["items"]:
+            asn.append("items", {
+                "item_code": item.get("item_code"),
+                "supplied_quantity": float(item.get("qty")),
+                "item_name": frappe.get_value("Item", item.get("item_code"), "item_name"),
+                "uom": frappe.get_value("Purchase Order Item", 
+                                        {"parent": po_id, "item_code": item.get("item_code")},
+                                        "uom") 
+            })
+
+    asn.insert(ignore_permissions=True)
+    asn.save()
+    
+    return frappe.msgprint(_("Advance Shipping Notification created successfully"))
+
+
 
