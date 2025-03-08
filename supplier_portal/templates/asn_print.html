@@ -1,0 +1,124 @@
+
+{% block style %}
+<style>
+    .container {
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        background: transparent;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: none;
+    }
+    .header {
+        text-align: center;
+        padding: 10px;
+        border-bottom: 2px solid black;
+    }
+    .header h1 {
+        color: black;
+        margin: 0;
+    }
+    .info-table, .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        text-align: left;
+    }
+    .info-table th, .items-table th {
+        background: transparent;
+        color: black;
+        padding: 10px;
+        border: 1px solid black;
+    }
+    .info-table td, .items-table td {
+        padding: 10px;
+        border: 1px solid black;
+        background: transparent;
+    }
+    .qr-container {
+        text-align: right;
+        margin: 10px;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1>Advance Shipment Notification</h1>
+    </div>
+    
+    <!-- QR Code -->
+    <div class="qr-container">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ frappe.utils.get_url() }}/app/advance-shipment-notification/{{ asn.name }}" width="100">
+    </div>
+    
+    <!-- ASN Information -->
+    <p><strong>ASN ID:</strong> {{ asn.name }} | <strong>Posting Date:</strong> {{ asn.posting_date }}</p>
+    
+    <h3>Shipment Details</h3>
+    <table class="info-table">
+        <tr>
+            <th>Purchase Order</th>
+            <td>{{ asn.purchase_order }}</td>
+        </tr>
+        <tr>
+            <th>Supplier Invoice No</th>
+            <td>{{ asn.supplier_invoice_no }}</td>
+        </tr>
+        <tr>
+            <th>Shipping By</th>
+            <td>{{ asn.shipping_by }}</td>
+        </tr>
+        <tr>
+            <th>Vehical Number</th>
+            <td>{{ asn.vehical_no }}</td>
+        </tr>
+        
+    </table>
+
+    <h3>Shipping Information</h3>
+    <table class="info-table">
+        <tr>
+            <th>Shipping From</th>
+            <th>Shipping To</th>
+        </tr>
+        <tr>
+            <td>
+                {{ asn.supplier_address }}<br>
+                {{ asn.supplier_address_details }}
+            </td>
+            <td>
+                {{ asn.company_shipping_address }}<br>
+                {{ asn.shipping_address_details }}
+            </td>
+        </tr>
+    </table>
+    
+    <h3>ASN Items</h3>
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th>Item Code</th>
+                <th>Item Name</th>
+                <th>UOM</th>
+                <th>Supplied Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in asn.items %}
+                <tr>
+                    <td>{{ item.item_code }}</td>
+                    <td>{{ item.item_name }}</td>
+                    <td>{{ item.uom }}</td>
+                    <td>{{ item.supplied_quantity }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

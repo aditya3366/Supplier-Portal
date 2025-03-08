@@ -17,6 +17,10 @@
   "supplier_invoice_scan_copy",
   "section_break_looq",
   "items",
+  "transport_section",
+  "shipping_by",
+  "column_break_xijw",
+  "vehical_no",
   "address_section",
   "supplier",
   "supplier_address",
@@ -146,12 +150,31 @@
    "fieldtype": "Small Text",
    "label": "Billing Address Details",
    "read_only": 1
+  },
+  {
+   "fieldname": "transport_section",
+   "fieldtype": "Section Break",
+   "label": "Transport"
+  },
+  {
+   "fieldname": "shipping_by",
+   "fieldtype": "Data",
+   "label": "Shipping By"
+  },
+  {
+   "fieldname": "column_break_xijw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "vehical_no",
+   "fieldtype": "Data",
+   "label": "Vehical No"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-03 15:51:11.878897",
+ "modified": "2025-03-08 15:20:39.255778",
  "modified_by": "Administrator",
  "module": "Supplier Portal",
  "name": "Advance Shipment Notification",

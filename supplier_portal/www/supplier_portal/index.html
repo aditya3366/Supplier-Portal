@@ -12,7 +12,7 @@
     color: black;
     position: fixed;
     left: 0;
-    top: 48px;
+    top: 0px;
     padding-top: 0px;
     border-right: 1px solid #ddd;
     border-top: 1px solid #ddd;
@@ -84,7 +84,7 @@
     <h3 style="text-align: center;">Supplier Portal</h3><br>    
     <a href="{{ url }}/supplier_portal/?section=purchase_orders" {% if section == "purchase_orders" %}class="active"{% endif %}>📦 Purchase Orders</a><br>
     <a href="{{ url }}/supplier_portal/?section=purchase_receipts" {% if section == "purchase_receipts" %}class="active"{% endif %}>📑 Purchase Receipts</a><br>
-    <a href="{{ url }}/supplier_portal/?section=purchase_requests" {% if section == "purchase_requests" %}class="active"{% endif %}>📝 Purchase Requests</a><br>
+    <!-- <a href="{{ url }}/supplier_portal/?section=purchase_requests" {% if section == "purchase_requests" %}class="active"{% endif %}>📝 Purchase Requests</a><br> -->
     <a href="{{ url }}/supplier_portal/?section=asn" {% if section == "asn" %}class="active"{% endif %}>🚚 ASN</a><br>
     <a href="{{ url }}/supplier_portal/?section=reports" {% if section == "reports" %}class="active"{% endif %}>📊 Reports</a><br>
 </div>
@@ -268,7 +268,13 @@
                                 <td>{{ asn.status }}</td>
                                 <td>{{ asn.purchase_order }}</td>
                                 <td>{{ asn.supplier_invoice_no }}</td>
-                                <td><a href="{{ url }}/supplier_portal/?asn_id={{ asn.name }}">View</a></td>
+                                <td>
+                                    <a href="{{ url }}/supplier_portal/?asn_id={{ asn.name }}" 
+                                       style="display: inline-block; padding: 4px 9px; background-color: #3F95F1; color: white;text-decoration: none; border-radius: 5px; border: none; cursor: pointer;">
+                                        View Details
+                                    </a>
+                                </td>
+
 
                             </tr>
                         {% endfor %}
@@ -343,51 +349,71 @@
     <!-- =========================================================================================================================== -->
 
 
-    {% elif section == "asn_details" %}
-        
-    
-        <div class="container mt-4">
-            <h3 class="text-primary">ASN Details</h3>
-            <div class="card p-4 mb-4 shadow-sm bg-light border rounded">
-                <p><strong>Order ID:</strong> {{ asn.name }}</p>
-                <p><strong>Supplier:</strong> {{ asn.supplier }}</p>
-              <!--   <p><strong>Transaction Date:</strong> {{ purchase_order.transaction_date }}</p>
-                <p><strong>Status:</strong> {{ purchase_order.status }}</p> -->
-            </div>
-    
-            <!-- <h4 class="text-primary">Items</h4>
-            <div class="table-responsive">
-                <table class="table table-striped table-hover border rounded shadow-sm">
-                    <thead class="bg-dark text-black">
-                        <tr>
-                            <th>Item Code</th>
-                            <th>Item Name</th>
-                            <th class="text-center">Quantity</th>
-                            <th class="text-end">Rate</th>
-                            <th class="text-end">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in purchase_order.items %}
-                        <tr>
-                            <td>{{ item.item_code }}</td>
-                            <td>{{ item.item_name }}</td>
-                            <td class="text-center">{{ item.qty }}</td>
-                            <td class="text-end">₹ {{ item.rate }}</td>
-                            <td class="text-end fw-bold">₹ {{ item.amount }}</td>
-                        </tr>
-                       
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <div>
-                    <p class="text-success fw-bold" style="text-align: right;margin: 20px;"><strong>Net Total : </strong> ₹         {{purchase_order.total }}</p>
-                </div>
-                <div>
-                    <p class="text-success fw-bold" style="text-align: right;margin: 20px;"><strong>Grand Total : </strong> ₹         {{purchase_order.grand_total }}</p>
-                </div>
-            </div> -->
-        </div>
+    {% elif section == "asn_detail" %}
+        <!-- Print Preview Button -->
+        <!-- Print Preview Button -->
+        <button onclick="openASNPrint('{{ asn.name }}')">Print Preview</button>
+        <script>
+            function openASNPrint(asn_id) {
+                let url = `/api/method/supplier_portal.www.supplier_portal.index.view_asn_print?asn_id=${asn_id}`;
+                window.open(url, '_blank');
+            }
+        </script>
+
+
+
+        <script>
+            function downloadASN(asn_id) {
+                window.location.href = '/api/method/supplier_portal.index.download_asn_pdf/?asn_id=' + asn_id;
+            }
+        </script>
+
+               
+
+        <h2>ASN Details</h2>
+        <table border="1">
+            <tr>
+                <th>ASN ID</th>
+                <td>{{ asn.name }}</td>
+            </tr>
+            <tr>
+                <th>Posting Date</th>
+                <td>{{ asn.posting_date }}</td>
+            </tr>
+            <tr>
+                <th>Purchase Order</th>
+                <td>{{ asn.purchase_order }}</td>
+            </tr>
+            <tr>
+                <th>Supplier Invoice No</th>
+                <td>{{ asn.supplier_invoice_no }}</td>
+            </tr>
+        </table>
+
+        <h3>ASN Items</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Item Code</th>
+                    <th>Item Name</th>
+                    <th>Supplied Quantity</th>
+                    <th>UOM</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in asn.items %}
+                    <tr>
+                        <td>{{ item.item_code }}</td>
+                        <td>{{ item.item_name }}</td>
+                        <td>{{ item.supplied_quantity }}</td>
+                        <td>{{ item.uom }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="/supplier_portal?section=asn">Back to ASN List</a>
+
 
 
 
@@ -488,6 +514,9 @@
                         </p>
                         <p class="mb-0"><strong><i class="fas fa-check-circle"></i>PO Status:</strong> 
                             <span class="badge bg-primary">{{ purchase_order.status }}</span>
+                        </p><br>
+                        <p class="mb-0"><strong><i class="fas fa-check-circle"></i>Shipping Address:</strong> 
+                            <span class="text">{{ purchase_order.shipping_address_display }}</span>
                         </p>
                     </div>
 
@@ -495,7 +524,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label"><strong>Invoice No:</strong></label>
-                            <input type="text" class="form-control" name="invoice_no" placeholder="Enter invoice number">
+                            <input type="text" class="form-control" name="invoice_no" placeholder="Enter invoice number" min="1" >
                         </div>
 
                         <div class="mb-3">
@@ -505,7 +534,15 @@
 
                         <div class="mb-3">
                             <label class="form-label"><strong>Supplier Invoice Scan Copy:</strong></label>
-                            <input type="file" class="form-control" name="supplier_invoice_scan_copy">
+                            <input type="file" class="form-control" name="supplier_invoice_scan_copy" min="1" >
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Shipping By:</strong></label>
+                            <input type="text" class="form-control" name="shipping_by" placeholder="Enter invoice number" min="1" >
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Vehical No:</strong></label>
+                            <input type="text" class="form-control" name="vehical_no" placeholder="Enter invoice number" min="1" >
                         </div>
                     </div>
                 </div>
@@ -532,8 +569,9 @@
                                 <td>{{ item.item_code }}</td>
                                 <td>{{ item.item_name }}</td>
                                 <td class="text-center">{{ item.qty }}</td>
+
                                 <td class="text-center">
-                                    <input type="number" class="form-control text-center" name="shipped_qty_{{ item.item_code }}" min="1" required>
+                                    <input type="int" class="form-control text-center" name="shipped_qty_{{ item.item_code }}" min="1" required>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -554,37 +592,7 @@
 </body>
 
         <script>
-            document.getElementById("asn-form").addEventListener("submit", async function (event) {
-                event.preventDefault();
-
-                let formData = new FormData(this);
-                let fileInput = document.querySelector('input[name="supplier_invoice_scan_copy"]');
-
-                if (!fileInput.files.length) {
-                    frappe.msgprint("Please upload a supplier invoice scan copy before submitting.");
-                    return;
-
-
-                }
-
-                // Show confirmation popup
-                frappe.confirm(
-                    __("Are you sure you want to submit this ASN? Please check if the shipping quantity is correct. Once submitted, you cannot change the quantity. If everything is correct, proceed.<br><br> \n\nक्या आप सुनिश्चित हैं कि आप इस ASN को सबमिट करना चाहते हैं? कृपया जांच लें कि शिपिंग मात्रा सही है। एक बार सबमिट करने के बाद, आप मात्रा बदल नहीं सकते। यदि सब कुछ सही है, तो आगे बढ़ें।"),
-                    function () {
-                        // User clicked Submit, proceed with file upload and ASN creation
-                        uploadFile(fileInput.files[0])
-                            .then((fileUrl) => {
-                                formData.append("supplier_invoice_scan_copy", fileUrl);
-                                createASN(formData);
-                            })
-                            .catch(() => {
-                                frappe.ui.Dialog()("File upload failed. Please try again.");
-                            });
-                    },
-                    
-                    __
-                );
-            });
+            
 
             async function uploadFile(file) {
                 return new Promise((resolve, reject) => {
@@ -613,9 +621,46 @@
                 });
             }
 
+            
+            document.getElementById("asn-form").addEventListener("submit", async function (event) {
+                event.preventDefault();
+            
+                let formData = new FormData(this);
+                let fileInput = document.querySelector('input[name="supplier_invoice_scan_copy"]');
+            
+                // Show confirmation popup
+                frappe.confirm(
+                    __("Are you sure you want to submit this ASN? Please check if the shipping quantity is correct. Once submitted, you             cannot change the quantity. If everything is correct, proceed.<br><br> \n\nक्या आप सुनिश्चित हैं कि आप इस ASN को सबमिट          करना चाहते हैं? कृपया जांच लें कि शिपिंग मात्रा सही है। एक बार सबमिट करने के बाद, आप मात्रा बदल नहीं सकते। यदि सब कुछ सही है, तो आगे बढ़ें।"),
+                    function () {
+                        // User clicked Submit, proceed with file upload and ASN creation
+                        if (fileInput.files.length > 0) {
+                            uploadFile(fileInput.files[0])
+                                .then((fileUrl) => {
+                                    formData.append("supplier_invoice_scan_copy", fileUrl);
+                                    createASN(formData);
+                                })
+                                .catch(() => {
+                                    frappe.msgprint("File upload failed. Please try again.", "Error");
+                                });
+                        } else {
+                            createASN(formData);
+                        }
+                    }
+                );
+                
+    setTimeout(() => {
+        let modal = document.querySelector(".modal");
+        if (modal) {
+            modal.style.height = "72vh"; // Set custom height
+            modal.style.overflowY = "auto"; // Enable scrolling
+        }
+    }, 300); // Delay ensures modal is fully loaded
+            });
+            
             function createASN(formData) {
                 let data = { items: [] };
-
+            
+                // Process form data
                 formData.forEach((value, key) => {
                     if (key.startsWith("shipped_qty_")) {
                         data.items.push({
@@ -626,19 +671,25 @@
                         data[key] = value;
                     }
                 });
-
+            
                 frappe.call({
                     method: "supplier_portal.www.supplier_portal.index.create_asn",
                     args: { data: data },
                     callback: function (response) {
                         if (response.message) {
+                            console.log("ASN ID:", response.message); // Debugging log
                             frappe.msgprint("ASN created successfully!");
-                            location.reload();
+            
+                            // Delay before redirect to ensure user sees the message
+                            setTimeout(() => {
+                                window.location.href = `{{ frappe.utils.get_url() }}/supplier_portal/?asn_id=${response.message}`;
+                            }, 1000);
+                        } else {
+                            frappe.msgprint("Failed to create ASN. Please try again.", "Error");
                         }
                     }
                 });
             }
-
 
                 
 
