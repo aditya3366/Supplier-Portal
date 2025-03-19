@@ -4,92 +4,259 @@
 
 {% block page_content %}
 <style>
-    /* Sidebar Styles */
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    background-color: #FFFFFF;
-    color: black;
-    position: fixed;
-    left: 0;
-    top: 0px;
-    padding-top: 0px;
-    border-right: 1px solid #ddd;
-    border-top: 1px solid #ddd;
-    transition: all 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Main Content */
-.content {
-    margin-left: 250px; /* Adjust for sidebar */
-    padding: 10px;
-    transition: margin 0.3s ease;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        top: 0;
-        padding-bottom: 10px;
+    /* General Styles */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
     }
-    
+
+    .container {
+        max-width: 1400px;
+/*        max-height: 1200px;*/
+        margin: 0 auto;
+        padding: 5px;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+        width: 260px;
+        height: 100vh;
+        background-color: #F0F0F0;
+        color: #333;
+        position: fixed;
+        left: 0;
+        top: 0;
+        padding-top: 20px;
+        border-right: 1px solid #ddd;
+        box-shadow: 4px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
     .sidebar h3 {
         text-align: center;
-        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        color: #007bff;
     }
 
     .sidebar a {
         display: block;
-        text-align: center;
-        padding: 10px;
+        padding: 10px 20px;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
     }
 
+    .sidebar a:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .sidebar a.active {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    /* Main Content Styles */
     .content {
-        margin-left: 0;
-        padding: 15px;
+        margin-left: 245px;
+        margin-top: -80px;
+        padding: 20px;
+        transition: margin 0.3s ease;
     }
 
-    .d-flex {
-        flex-direction: column;
+    .content h3 {
+        color: #007bff;
+        margin-bottom: 20px;
     }
 
-    .shadow-sm {
-        width: 100% !important;
-        height: auto !important;
-        margin-bottom: 10px;
-    }
-}
-
+    /* Table Styles */
     table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
+        max-width: 100% !important;
+
     }
+
     table, th, td {
         border: 1px solid #ddd;
-        padding: 10px;
+        padding: 12px;
         text-align: left;
     }
+
     th {
-        background-color: #E5E5E5;
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Card Styles */
+    .card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .card h4 {
+        margin-bottom: 15px;
+        color: #007bff;
+    }
+
+    /* Button Styles */
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        margin-top: 80px;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* Responsive Design */
+    @media screen and (max-width: 768px) {
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .sidebar a {
+            text-align: center;
+        }
+
+        .content {
+            margin-left: 0;
+            padding: 15px;
+        }
+    }
+    /* Custom CSS for Frappe Dialogs */
+    .modal-dialog {
+        position: relative !important; /* Remove fixed positioning */
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        margin: 20px auto !important; /* Center the dialog */
+        max-width: 50% !important;
+        max-height: 40% !important; /* Make the dialog responsive */
+    }
+
+    .modal-content {
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .modal-header {
+        background-color: #007bff !important;
+        color: #fff !important;
+        border-radius: 8px 8px 0 0 !important;
+        padding: 15px !important;
+        max-height: 25%;
+    }
+
+    .modal-title {
+        font-size: 26px !important;
+        font-weight: bold !important;
+    }
+
+    .modal-body {
+        padding: 20px !important;
+        font-size: 18px !important;
+        line-height: 1.5 !important;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #ddd !important;
+        padding: 15px !important;
+        text-align: right !important;
+    }
+
+    .modal-footer .btn {
+        margin-left: 10px !important;
     }
 </style>
 
 <!-- Sidebar -->
-<div class="sidebar">
-    <h3 style="text-align: center;">Supplier Portal</h3><br>    
-    <a href="{{ url }}/supplier_portal/?section=purchase_orders" {% if section == "purchase_orders" %}class="active"{% endif %}>📦 Purchase Orders</a><br>
-    <a href="{{ url }}/supplier_portal/?section=purchase_receipts" {% if section == "purchase_receipts" %}class="active"{% endif %}>📑 Purchase Receipts</a><br>
-    <!-- <a href="{{ url }}/supplier_portal/?section=purchase_requests" {% if section == "purchase_requests" %}class="active"{% endif %}>📝 Purchase Requests</a><br> -->
-    <a href="{{ url }}/supplier_portal/?section=asn" {% if section == "asn" %}class="active"{% endif %}>🚚 ASN</a><br>
-    <a href="{{ url }}/supplier_portal/?section=reports" {% if section == "reports" %}class="active"{% endif %}>📊 Reports</a><br>
-</div>
+<!-- <div class="sidebar"> -->
+    <!-- <h3>Supplier Portal</h3>
+    <a href="{{ url }}/supplier_portal/?section=purchase_orders" {% if section == "purchase_orders" %}class="active"{% endif %}>📦 Purchase Orders</a>
+    <a href="{{ url }}/supplier_portal/?section=purchase_receipts" {% if section == "purchase_receipts" %}class="active"{% endif %}>📑 Purchase Receipts</a>
+    <a href="{{ url }}/supplier_portal/?section=asn" {% if section == "asn" %}class="active"{% endif %}>🚚 ASN</a>
+    <a href="{{ url }}/supplier_portal/?section=reports" {% if section == "reports" %}class="active"{% endif %}>📊 Reports</a> -->
+
+    
+    
+<!-- </div> -->
 
 <!-- Main Content -->
+<div class="sidebar">
+
+    <h3 style="padding: 15px 20px; margin: 0; font-size: 18px; font-weight: 500; color: #36414C; border-bottom: 1px solid #e5e5e5;">
+        Supplier Portal
+    </h3>
+    <div style="padding: 10px 0;">
+        <!-- Purchase Orders -->
+        <a href="{{ url }}/supplier_portal/?section=purchase_orders" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+            <i class="fas fa-file-invoice" style="margin-right: 10px; width: 20px; text-align: center;"></i> Purchase Orders
+        </a>
+
+        <!-- Purchase Receipt -->
+        <a href="{{ url }}/supplier_portal/?section=purchase_receipts" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+            <i class="fas fa-receipt" style="margin-right: 10px; width: 20px; text-align: center;"></i> Purchase Receipt
+        </a>
+
+        <!-- Advance Shipping Notification (ASN) -->
+        <a href="{{ url }}/supplier_portal/?section=asn" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+            <i class="fas fa-truck-moving" style="margin-right: 10px; width: 20px; text-align: center;"></i> ASN
+        </a>
+
+        <!-- Supplier Registration -->
+        <a href="{{ url }}/supplier_portal/?section=supplier_registration" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+            <i class="fas fa-user-plus" style="margin-right: 10px; width: 20px; text-align: center;"></i> Supplier Registration
+        </a>
+
+        <!-- Online “Request for Quotation” (RFQ) -->
+        <a href="{{ url }}/supplier_portal/?section=rfq" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+            <i class="fas fa-handshake" style="margin-right: 10px; width: 20px; text-align: center;"></i> Request for Quotation
+        </a>
+
+        <!-- GRN and Invoice Status -->
+        <a href="{{ url }}/supplier_portal/?section=grn_invoice_status" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+            <i class="fas fa-file-invoice-dollar" style="margin-right: 10px; width: 20px; text-align: center;"></i> GRN and Invoice Status
+        </a>
+
+        <!-- Supplier Managed Inventory -->
+        <a href="{{ url }}/supplier_portal/?section=supplier_managed_inventory" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+            <i class="fas fa-boxes" style="margin-right: 10px; width: 20px; text-align: center;"></i> Supplier Managed Inventory
+        </a>
+
+        <!-- Reports and Dashboards -->
+        <a href="{{ url }}/supplier_portal/?section=reports" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+            <i class="fas fa-chart-line" style="margin-right: 10px; width: 20px; text-align: center;"></i> Reports and Dashboards
+        </a>
+    </div>
+</div>
 <div class="content">
     {% if section == "purchase_orders" %}
         <!-- <h3>Purchase Orders</h3> -->
@@ -101,37 +268,57 @@
         <div class="d-flex gap-3">
             <!-- Total Purchase Orders Card -->
             <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" 
-                 style="width: 150px; height: 105px; margin-right: 10px; background: rgba(56, 162, 229, 0.1);">
+                 style="width: 200px; height: 105px; margin-right: 10px; background: rgba(231, 51, 51, 0.5);">
                 <div class="me-3">
-                    <i class="fa fa-shopping-cart text-primary" style="font-size: 24px;"></i>
+                    <i  style="font-size: 24px;"></i>
                 </div>
                 <div>
-                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Total Purchase Orders</p>
-                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #008ED4;">{{ total_pos }}</p>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Pending Purchase Order</p>
+                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #FF0000;">{{ 25 }}</p>
                 </div>
             </div>
             
             <!-- Total Completed Orders Card -->
             <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" 
-                 style="width: 150px; height: 105px; margin-right: 10px; background: rgba(16, 200, 1, 0.1);">
+                 style="width: 200px; height: 105px; margin-right: 10px; background: rgba(231, 51, 51, 0.2);">
                 <div class="me-3">
-                    <i class="fa fa-dollar-sign text-success" style="font-size: 24px;"></i>
+                    <i style="font-size: 24px;"></i>
                 </div>
                 <div>
-                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Total Completed Purchase Orders</p>
-                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #19C401;">{{ total_completed_po }}</p>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Today Deliverable Purchase Order</p>
+                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #FF0000;">{{ 25 }}</p>
                 </div>
             </div>
             
             <!-- Total Pending Orders Card -->
             <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" 
-                 style="width: 150px; height: 105px; margin-right: 10px; background: rgba(231, 51, 51, 0.1);">
+                 style="width: 200px; height: 105px; margin-right: 10px; background: rgba(56, 162, 229, 0.2);">
                 <div class="me-3">
-                    <i class="fa fa-dollar-sign text-danger" style="font-size: 24px;"></i>
+                    <i  style="font-size: 24px;"></i>
                 </div>
                 <div>
-                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Total Pending Purchase Orders</p>
-                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #E91818;">{{ total_incomplete_po }}</p>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Next 7 Days Deliverable PO</p>
+                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #000000;">{{ 25 }}</p>
+                </div>
+            </div>
+            <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" 
+                 style="width: 200px; height: 105px; margin-right: 10px; background: rgba(40, 167, 69, 0.2);">
+                <div class="me-3">
+                    <i  style="font-size: 24px;"></i>
+                </div>
+                <div>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">ASN Created But Not Delivered</p>
+                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #000000;">{{ 25 }}</p>
+                </div>
+            </div>
+            <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" 
+                 style="width: 200px; height: 105px; margin-right: 10px; background: rgba(40, 167, 69, 0.5);">
+                <div class="me-3">
+                    <i  style="font-size: 24px;"></i>
+                </div>
+                <div>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Delivered Purchase Order</p>
+                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #000000;">{{ 25 }}</p>
                 </div>
             </div>
 
@@ -302,7 +489,7 @@
             <a href="{{ url }}/supplier_portal/?section=create_asn&po_id={{ purchase_order.name }}" 
                class="btn btn-primary">Create ASN</a>
         </div>
-    
+        
         <div class="container mt-4">
             <h3 class="text-primary">Purchase Order Details</h3>
             <div class="card p-4 mb-4 shadow-sm bg-light border rounded">
@@ -360,8 +547,6 @@
             }
         </script>
 
-
-
         <script>
             function downloadASN(asn_id) {
                 window.location.href = '/api/method/supplier_portal.index.download_asn_pdf/?asn_id=' + asn_id;
@@ -371,6 +556,7 @@
                
 
         <h2>ASN Details</h2>
+        <button onclick="openASNPrint('{{ asn.name }}')">Print Preview</button>
         <table border="1">
             <tr>
                 <th>ASN ID</th>
@@ -445,7 +631,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1450px;
         }
 
         .card {
@@ -630,7 +816,7 @@
             
                 // Show confirmation popup
                 frappe.confirm(
-                    __("Are you sure you want to submit this ASN? Please check if the shipping quantity is correct. Once submitted, you             cannot change the quantity. If everything is correct, proceed.<br><br> \n\nक्या आप सुनिश्चित हैं कि आप इस ASN को सबमिट          करना चाहते हैं? कृपया जांच लें कि शिपिंग मात्रा सही है। एक बार सबमिट करने के बाद, आप मात्रा बदल नहीं सकते। यदि सब कुछ सही है, तो आगे बढ़ें।"),
+                    __("Are you sure you want to submit this ASN? The shipping quantity cannot be changed after submission. Please verify before proceeding."),
                     function () {
                         // User clicked Submit, proceed with file upload and ASN creation
                         if (fileInput.files.length > 0) {
@@ -647,14 +833,27 @@
                         }
                     }
                 );
+                // frappe.confirm(
+                //     "Are you sure you want to proceed?",
+                //     (confirmed) => {
+                //         if (confirmed) {
+                //             frappe.msgprint("You clicked Yes!");
+                //         } else {
+                //             frappe.msgprint("You clicked No!");
+                //         }
+                //     },
+                //     "Confirm Action",
+                //     "Proceed",
+                //     "Cancel"
+                // );
                 
-    setTimeout(() => {
-        let modal = document.querySelector(".modal");
-        if (modal) {
-            modal.style.height = "72vh"; // Set custom height
-            modal.style.overflowY = "auto"; // Enable scrolling
-        }
-    }, 300); // Delay ensures modal is fully loaded
+    // setTimeout(() => {
+    //     let modal = document.querySelector(".modal");
+    //     if (modal) {
+    //         modal.style.height = "72vh"; // Set custom height
+    //         modal.style.overflowY = "auto"; // Enable scrolling
+    //     }
+    // }, 300); // Delay ensures modal is fully loaded
             });
             
             function createASN(formData) {
