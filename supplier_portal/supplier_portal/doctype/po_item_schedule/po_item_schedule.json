@@ -1,0 +1,111 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-19 17:58:50.191279",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "purchase_order",
+  "item",
+  "month",
+  "year",
+  "week_i",
+  "week_ii",
+  "week_iii",
+  "week_iv",
+  "week_v",
+  "total"
+ ],
+ "fields": [
+  {
+   "fieldname": "purchase_order",
+   "fieldtype": "Link",
+   "label": "Purchase Order",
+   "options": "Purchase Order"
+  },
+  {
+   "columns": 2,
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Item",
+   "options": "Item"
+  },
+  {
+   "columns": 2,
+   "fieldname": "month",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Month",
+   "options": "\nJan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec"
+  },
+  {
+   "columns": 1,
+   "fieldname": "year",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Year"
+  },
+  {
+   "columns": 1,
+   "fieldname": "week_i",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Week I"
+  },
+  {
+   "columns": 1,
+   "fieldname": "week_ii",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Week II"
+  },
+  {
+   "columns": 1,
+   "fieldname": "week_iii",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Week III"
+  },
+  {
+   "columns": 1,
+   "fieldname": "week_iv",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Week IV"
+  },
+  {
+   "columns": 1,
+   "fieldname": "week_v",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Week V"
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Int",
+   "label": "Total"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-03-20 16:56:26.871014",
+ "modified_by": "Administrator",
+ "module": "Supplier Portal",
+ "name": "PO Item Schedule",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
