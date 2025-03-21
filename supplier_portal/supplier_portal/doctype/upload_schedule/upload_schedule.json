@@ -1,0 +1,108 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-19 16:13:32.068184",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "select_month_section",
+  "for_month",
+  "column_break_bcsp",
+  "year",
+  "select_supplier_section",
+  "supplier",
+  "download_the_template_section",
+  "download_template",
+  "attach_the_template_section",
+  "attach_template",
+  "upload_the_schedule_section",
+  "upload_data"
+ ],
+ "fields": [
+  {
+   "fieldname": "for_month",
+   "fieldtype": "Select",
+   "label": "For Month",
+   "options": "\njan\nFeb\nMar\nApr\nMay\nJan\nJul\nAug\nSep\nOct\nNov\nDec"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "download_template",
+   "fieldtype": "Button",
+   "label": "Download Template"
+  },
+  {
+   "fieldname": "attach_template",
+   "fieldtype": "Attach",
+   "label": "Attach Template"
+  },
+  {
+   "fieldname": "upload_data",
+   "fieldtype": "Button",
+   "label": "Upload Data"
+  },
+  {
+   "fieldname": "select_month_section",
+   "fieldtype": "Section Break",
+   "label": "Select Month and Year"
+  },
+  {
+   "fieldname": "select_supplier_section",
+   "fieldtype": "Section Break",
+   "label": "Select Supplier"
+  },
+  {
+   "fieldname": "download_the_template_section",
+   "fieldtype": "Section Break",
+   "label": "Download The Template"
+  },
+  {
+   "fieldname": "attach_the_template_section",
+   "fieldtype": "Section Break",
+   "label": "Attach The Template"
+  },
+  {
+   "fieldname": "upload_the_schedule_section",
+   "fieldtype": "Section Break",
+   "label": "Upload The Schedule"
+  },
+  {
+   "fieldname": "year",
+   "fieldtype": "Int",
+   "label": "Year"
+  },
+  {
+   "fieldname": "column_break_bcsp",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "hide_toolbar": 1,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-03-19 17:52:50.287702",
+ "modified_by": "Administrator",
+ "module": "Supplier Portal",
+ "name": "Upload Schedule",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -145,13 +145,18 @@ web_routes = [
 
 
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	# "*": {
+	# 	"on_update": "method",
+	# 	"on_cancel": "method",
+	# 	"on_trash": "method"
+	# }
+    "Upload Schedule Log": {
+        "before_submit": [
+            "supplier_portal.supplier_portal.doctype.upload_schedule_log.upload_schedule_log.validate_po",
+        ]
+    }
+}
 
 # Scheduled Tasks
 # ---------------
