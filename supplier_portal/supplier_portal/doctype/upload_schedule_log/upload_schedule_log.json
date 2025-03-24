@@ -53,7 +53,7 @@
    "fieldname": "month",
    "fieldtype": "Select",
    "label": "Month",
-   "options": "\nJan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec"
+   "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember"
   },
   {
    "fieldname": "schedule_section",

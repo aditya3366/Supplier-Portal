@@ -226,6 +226,11 @@
             <i class="fas fa-receipt" style="margin-right: 10px; width: 20px; text-align: center;"></i> Purchase Receipt
         </a>
 
+        <!-- Purchase Receipt -->
+        <a href="{{ url }}/supplier_portal/?section=scheduled_items" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+            <i class="fas fa-receipt" style="margin-right: 10px; width: 20px; text-align: center;"></i> Weekly Scheduled Items
+        </a>
+
         <!-- Advance Shipping Notification (ASN) -->
         <a href="{{ url }}/supplier_portal/?section=asn" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
             <i class="fas fa-truck-moving" style="margin-right: 10px; width: 20px; text-align: center;"></i> ASN
@@ -385,6 +390,8 @@
 
         </div>
 
+
+
         <!-- =========================================================================================================================== -->
         
         {% if purchase_receipts %}
@@ -422,6 +429,80 @@
         {% endif %}
 
     <!-- =========================================================================================================================== -->
+
+
+    {% elif section == "scheduled_items" %}
+        <h3>Weekly Scheduled Items</h3>
+
+        <!-- Current Week, Month, and Year -->
+        <div class="d-flex gap-3 mb-4">
+            <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" style="width: 200px; height: 105px; margin-right: 10px; background: rgba(56, 162, 229, 0.1);">
+                <div class="me-3">
+                    <i class="fa fa-calendar text-primary" style="font-size: 24px;"></i>
+                </div>
+                <div>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Current Week</p><br>
+                    <p class="mb-1" style="font-size: 16px; font-weight: bold; color: #008ED4;">{{ current_week }}</p>
+                </div>
+            </div>
+
+            <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" style="width: 200px; height: 105px; margin-right: 10px; background: rgba(56, 162, 229, 0.1);">
+                <div class="me-3">
+                    <i class="fa fa-calendar text-primary" style="font-size: 24px;"></i>
+                </div>
+                <div>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Current Month</p>
+                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #008ED4;">{{ current_month }}</p>
+                </div>
+            </div>
+
+            <div class="shadow-sm rounded-lg p-3 d-flex align-items-center" style="width: 200px; height: 105px; margin-right: 10px; background: rgba(56, 162, 229, 0.1);">
+                <div class="me-3">
+                    <i class="fa fa-calendar text-primary" style="font-size: 24px;"></i>
+                </div>
+                <div>
+                    <p class="mb-1" style="font-size: 14px; font-weight: bold; color: #595959;">Current Year</p>
+                    <p class="mb-1" style="font-size: 26px; font-weight: bold; color: #008ED4;">{{ current_year }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table for Weekly Scheduled Items -->
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Purchase Order</th>
+                    <th>Item</th>
+                    <th>Month</th>
+                    <th>Year</th>
+                    <th>{{ current_week }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for schedule in scheduled_items %}
+                    <tr>
+                        <td>{{ schedule.purchase_order }}</td>
+                        <td>{{ schedule.item }}</td>
+                        <td>{{ schedule.month }}</td>
+                        <td>{{ schedule.year }}</td>
+                        <td>
+                            {{ schedule.week_qty }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+    
+
+    
+
+        
+          
+    
+    
+
+
     <!-- =========================================================================================================================== -->
         
     {% elif section == "purchase_requests" %}

@@ -40,7 +40,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Month",
-   "options": "\nJan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec"
+   "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember"
   },
   {
    "columns": 1,

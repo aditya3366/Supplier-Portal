@@ -23,7 +23,7 @@
    "fieldname": "for_month",
    "fieldtype": "Select",
    "label": "For Month",
-   "options": "\njan\nFeb\nMar\nApr\nMay\nJan\nJul\nAug\nSep\nOct\nNov\nDec"
+   "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember"
   },
   {
    "fieldname": "supplier",

@@ -1,5 +1,6 @@
 import frappe
 from frappe import _
+from datetime import datetime
 
 def get_context(context):
     """Fetch data for the supplier portal web page."""
@@ -12,6 +13,27 @@ def get_context(context):
     section = frappe.form_dict.get("section", "")
     po_id = frappe.form_dict.get("po_id", None)
     asn_id = frappe.form_dict.get("asn_id", None) 
+
+    today = datetime.today()
+
+    # Determine the current week based on today's date
+    if 1 <= today.day <= 7:
+        current_week = "Week I (1st - 7th)"
+    elif 8 <= today.day <= 14:
+        current_week = "Week II (8th - 14th)"
+    elif 15 <= today.day <= 21:
+        current_week = "Week III (15th - 21st)"
+    elif 22 <= today.day <= 28:
+        current_week = "Week IV (22nd - 28th)"
+    else:
+        current_week = "Week V (29th - End of Month)"
+
+    # Assign values to the context (used in Jinja templates)
+    context.current_month = today.strftime("%B")  # Example: "March"
+    context.current_year = today.year  # Example: 2024
+    context.current_week = current_week
+
+    
 
 
     ##==============================================================================================================================================
@@ -104,6 +126,8 @@ def get_context(context):
         return
 
     ##==============================================================================================================================================
+
+    
     purchase_receipts = []
     if section == "purchase_receipts":
         supplier_list = frappe.db.sql(
@@ -143,6 +167,8 @@ def get_context(context):
     context.url = frappe.utils.get_url()
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------
+    if section == "scheduled_items":
+        context.update(fetch_all_scheduled_items())
 
   
     # if asn_id:
@@ -363,6 +389,62 @@ def view_asn_print(asn_id):
 
 
 
+def fetch_all_scheduled_items():
+    """Fetch all rows from the Item Schedule child table across all Purchase Orders 
+       where the current month and year match the values in the table."""
+    
+    today = datetime.today()
+    current_month = today.strftime("%B")  # Example: "October"
+    current_year = today.year
 
+    # Determine the current week column based on today's date
+    if 1 <= today.day <= 7:
+        current_week_column = "week_i"
+    elif 8 <= today.day <= 14:
+        current_week_column = "week_ii"
+    elif 15 <= today.day <= 21:
+        current_week_column = "week_iii"
+    elif 22 <= today.day <= 28:
+        current_week_column = "week_iv"
+    else:
+        current_week_column = "week_v"
+
+    # Fetch data where the month and year match the current month and year
+    scheduled_items = frappe.db.sql(f"""
+        SELECT 
+            sc.purchase_order,
+            sc.item,
+            sc.month,
+            sc.year,
+            sc.{current_week_column} AS week_qty
+        FROM `tabItem Schedule` sc
+        INNER JOIN `tabPurchase Order` po ON sc.parent = po.name
+        WHERE sc.month = %s AND sc.year = %s
+        ORDER BY sc.purchase_order, sc.item
+    """, (current_month, current_year), as_dict=True)
+
+    # Return a dictionary with filtered results
+    return {
+        "scheduled_items": scheduled_items,
+        "current_week": current_week_column.replace("_", " ").title(),  # Example: "Week IV"
+        "current_month": current_month,
+        "current_year": current_year
+    }
+
+
+# def get_current_week(today):
+#     """Get the current week range (e.g., "Week 1: 1st - 7th")."""
+#     first_day_of_month = today.replace(day=1)
+#     week_number = get_current_week_number(today)
+#     start_day = first_day_of_month.day + (week_number - 1) * 7
+#     end_day = min(start_day + 6, (today.replace(day=1, month=today.month % 12 + 1) - today.replace(day=1)).days)
+#     return f"Week {week_number}: {start_day}th - {end_day}th"
+
+
+# def get_current_week_number(today):
+#     """Calculate the current week of the month."""
+#     first_day_of_month = today.replace(day=1)
+#     week_number = ((today - first_day_of_month).days // 7) + 1
+#     return week_number
 
 
