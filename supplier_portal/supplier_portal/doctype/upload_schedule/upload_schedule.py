@@ -118,7 +118,9 @@ def create_schedule_data(data):
 
     # Fetch the open forecast
     suplier = data.get('supplier').replace(" ", "_")
-    file_path = f"/tmp/ITM_SCH_{suplier}_.xlsx"
+    year = data.get('year')
+    month = data.get('for_month')
+    file_path = f"/tmp/ITM_SCH_{suplier}_{month}_{year}_.xlsx"
     
     # Save the workbook to the file path
     workbook.save(file_path)
