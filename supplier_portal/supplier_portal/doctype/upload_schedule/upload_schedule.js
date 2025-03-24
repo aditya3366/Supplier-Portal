@@ -63,7 +63,7 @@ frappe.ui.form.on("Upload Schedule", {
 	    if (!frm.doc.attach_template) {
 	        frappe.throw("Please attach file first");
 	    }
-	    frappe.confirm('This process will erase all the previous uploaded data in Annexure I. Are you sure you want to proceed ahead?', () => {
+	    frappe.confirm('Are you sure you want to proceed ?', () => {
 	        frappe.show_progress("Processing", 0, 100, "Starting...");
 	        frappe.call({
 	            method: UPLOAD_DATA,
@@ -82,7 +82,7 @@ frappe.ui.form.on("Upload Schedule", {
 	        });
 	    }, () => {});
 	},
-	
+
 	////---------------------------------------------------------------------------------------------------------------------------------------
 });
 
