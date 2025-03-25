@@ -217,47 +217,47 @@
     </h3>
     <div style="padding: 10px 0;">
         <!-- Purchase Orders -->
-        <a href="{{ url }}/supplier_portal/?section=purchase_orders" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+        <a href="{{ url }}/supplier_portal?section=purchase_orders" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
             <i class="fas fa-file-invoice" style="margin-right: 10px; width: 20px; text-align: center;"></i> Purchase Orders
         </a>
 
         <!-- Purchase Receipt -->
-        <a href="{{ url }}/supplier_portal/?section=purchase_receipts" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+        <a href="{{ url }}/supplier_portal?section=purchase_receipts" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
             <i class="fas fa-receipt" style="margin-right: 10px; width: 20px; text-align: center;"></i> Purchase Receipt
         </a>
 
         <!-- Purchase Receipt -->
-        <a href="{{ url }}/supplier_portal/?section=scheduled_items" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+        <a href="{{ url }}/supplier_portal?section=scheduled_items" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
             <i class="fas fa-receipt" style="margin-right: 10px; width: 20px; text-align: center;"></i> Weekly Scheduled Items
         </a>
 
         <!-- Advance Shipping Notification (ASN) -->
-        <a href="{{ url }}/supplier_portal/?section=asn" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+        <a href="{{ url }}/supplier_portal?section=asn" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
             <i class="fas fa-truck-moving" style="margin-right: 10px; width: 20px; text-align: center;"></i> ASN
         </a>
 
         <!-- Supplier Registration -->
-        <a href="{{ url }}/supplier_portal/?section=supplier_registration" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+        <a href="{{ url }}/supplier_portal?section=supplier_registration" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
             <i class="fas fa-user-plus" style="margin-right: 10px; width: 20px; text-align: center;"></i> Supplier Registration
         </a>
 
         <!-- Online “Request for Quotation” (RFQ) -->
-        <a href="{{ url }}/supplier_portal/?section=rfq" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+        <a href="{{ url }}/supplier_portal?section=rfq" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
             <i class="fas fa-handshake" style="margin-right: 10px; width: 20px; text-align: center;"></i> Request for Quotation
         </a>
 
         <!-- GRN and Invoice Status -->
-        <a href="{{ url }}/supplier_portal/?section=grn_invoice_status" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+        <a href="{{ url }}/supplier_portal?section=grn_invoice_status" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
             <i class="fas fa-file-invoice-dollar" style="margin-right: 10px; width: 20px; text-align: center;"></i> GRN and Invoice Status
         </a>
 
         <!-- Supplier Managed Inventory -->
-        <a href="{{ url }}/supplier_portal/?section=supplier_managed_inventory" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+        <a href="{{ url }}/supplier_portal?section=supplier_managed_inventory" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
             <i class="fas fa-boxes" style="margin-right: 10px; width: 20px; text-align: center;"></i> Supplier Managed Inventory
         </a>
 
         <!-- Reports and Dashboards -->
-        <a href="{{ url }}/supplier_portal/?section=reports" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
+        <a href="{{ url }}/supplier_portal?section=reports" style="display: block; padding: 10px 20px; color: #36414C; text-decoration: none; font-size: 14px; transition: background-color 0.2s;">
             <i class="fas fa-chart-line" style="margin-right: 10px; width: 20px; text-align: center;"></i> Reports and Dashboards
         </a>
     </div>
@@ -351,7 +351,7 @@
                     <td>₹ {{ po.grand_total }}</td>
                     <td>
                         <!-- <a href="{{ url }}/supplier_portal/?po_id={{ po.name }}"  -->
-                        <a href="{{ url }}/supplier_portal/?po_id={{ po.name }}" 
+                        <a href="{{ url }}/supplier_portal?po_id={{ po.name }}" 
                            style="display: inline-block; padding: 4px 9px; background-color: #3F95F1; color: white;text-decoration: none; border-radius: 5px; border: none; cursor: pointer;">
                             View Details
                         </a>
@@ -413,7 +413,7 @@
                     <td>{{ pr.status }}</td>
                     <td>₹ {{ pr.grand_total }}</td>
                     <td>
-                        <a href="{{ url }}/supplier_portal/?pr_id={{ pr.name }}" 
+                        <a href="{{ url }}/supplier_portal?pr_id={{ pr.name }}" 
                            style="display: inline-block; padding: 4px 9px; background-color: #3F95F1; color: white;text-decoration: none; border-radius: 5px; border: none; cursor: pointer;">
                             View Details
                         </a>
@@ -438,7 +438,7 @@
             <a ></a>
         
             <!-- Create ASN Button (Right-Aligned) -->
-            <a href="{{ url }}/supplier_portal/?section=create_asn" 
+            <a href="{{ url }}/supplier_portal?section=create_asn" 
                class="btn btn-primary">Create ASN</a>
         </div>
 
@@ -545,7 +545,7 @@
                                 <td>{{ asn.purchase_order }}</td>
                                 <td>{{ asn.supplier_invoice_no }}</td>
                                 <td>
-                                    <a href="{{ url }}/supplier_portal/?asn_id={{ asn.name }}" 
+                                    <a href="{{ url }}/supplier_portal?asn_id={{ asn.name }}" 
                                        style="display: inline-block; padding: 4px 9px; background-color: #3F95F1; color: white;text-decoration: none; border-radius: 5px; border: none; cursor: pointer;">
                                         View Details
                                     </a>
@@ -571,7 +571,7 @@
     {% elif section == "purchase_order_detail" %}
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <!-- Back Button (←) -->
-            <a href="{{ url }}/supplier_portal/?section=purchase_orders" 
+            <a href="{{ url }}/supplier_portal?section=purchase_orders" 
                class="btn btn-light text-secondary">←</a>
         
             
@@ -636,7 +636,7 @@
 
         <script>
             function downloadASN(asn_id) {
-                window.location.href = '/api/method/supplier_portal.index.download_asn_pdf/?asn_id=' + asn_id;
+                window.location.href = '/api/method/supplier_portal.index.download_asn_pdf?asn_id=' + asn_id;
             }
         </script>
 
@@ -975,7 +975,7 @@
                             frappe.msgprint("ASN created successfully!");
 
                             setTimeout(() => {
-                                window.location.href = `/supplier_portal/?asn_id=${response.message}`;
+                                window.location.href = `/supplier_portal?asn_id=${response.message}`;
                             }, 1000);
                         } else {
                             frappe.msgprint("Failed to create ASN. Please try again.", "Error");
