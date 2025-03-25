@@ -433,7 +433,7 @@
 
     {% elif section == "scheduled_items" %}
         <h3>Weekly Scheduled Items</h3>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;margin-top: -70px;">
             <!-- Back Button (←) -->
             <a ></a>
         
@@ -691,7 +691,7 @@
         
     {% elif section == "create_asn" %}
         <div class="container mt-4">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; margin-top: -50px;">
                 <a ></a>
                 <button type="submit" class="btn btn-success" form="asn-form">Submit ASN</button>
             </div>
@@ -757,7 +757,6 @@
 <body>
 
     <div class="container my-5">
-        <!-- Page Title -->
         <h2 class="text-center text-primary fw-bold mb-4">Create ASN</h2>
 
         <!-- Purchase Order Details Card -->
@@ -769,7 +768,17 @@
                 <div class="row">
                     <!-- First Column: Order Details -->
                     <div class="col-md-6">
-                        
+                        <div class="mb-3">
+                            <label class="form-label"><strong> Company Name:</strong></label>
+                            <label class="form-label"> Nelson Global Products India Pvt Ltd Daman</label>
+                            
+
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><strong> Shipping To:</strong></label><br>
+                            <label class="form-label"> Nelson Global Products<br>Bhimpore, Marwad,<br> Dadra and Nagar Haveli and <br>Daman and Diu <br>396210<br>Contact No : 80 4842 6596</label>
+
+                        </div>
                     </div>
 
                     <!-- Second Column: Invoice Details -->
@@ -790,11 +799,11 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label"><strong>Shipping By:</strong></label>
-                            <input type="text" class="form-control" name="shipping_by" placeholder="Enter invoice number" min="1" >
+                            <input type="text" class="form-control" name="shipping_by" placeholder="Enter Shipping By" min="1" >
                         </div>
                         <div class="mb-3">
                             <label class="form-label"><strong>Vehical No:</strong></label>
-                            <input type="text" class="form-control" name="vehical_no" placeholder="Enter invoice number" min="1" >
+                            <input type="text" class="form-control" name="vehical_no" placeholder="Enter Vehical No" min="1" >
                         </div>
                     </div>
                 </div>

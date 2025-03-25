@@ -21,7 +21,7 @@ frappe.ui.form.on("Upload Schedule", {
 	                       "July", "August", "September", "October", "November", "December"];
 	    
 	    // Get next month index (handle December case)
-	    var next_month_index = (current_month_index + 1) % 12;  
+	    var next_month_index = (current_month_index) % 12;  
 	    var next_month = month_names[next_month_index];
 	
 	    // If next month is January, increment the year
@@ -30,7 +30,7 @@ frappe.ui.form.on("Upload Schedule", {
 	    }
 	
 	    // If current month is December, show all months
-	    let remaining_months = (current_month_index === 11) ? month_names : month_names.slice(current_month_index + 1);
+	    let remaining_months = (current_month_index === 11) ? month_names : month_names.slice(current_month_index);
 	
 	    console.log("Next Month:", next_month);
 	    console.log("Months to show:", remaining_months);

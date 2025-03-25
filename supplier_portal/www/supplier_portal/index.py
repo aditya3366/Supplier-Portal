@@ -18,15 +18,15 @@ def get_context(context):
 
     # Determine the current week based on today's date
     if 1 <= today.day <= 7:
-        current_week = "Week I (1st - 7th)"
+        current_week = "Week-1 (1st - 7th)"
     elif 8 <= today.day <= 14:
-        current_week = "Week II (8th - 14th)"
+        current_week = "Week-2 (8th - 14th)"
     elif 15 <= today.day <= 21:
-        current_week = "Week III (15th - 21st)"
+        current_week = "Week-3 (15th - 21st)"
     elif 22 <= today.day <= 28:
-        current_week = "Week IV (22nd - 28th)"
+        current_week = "Week-4 (22nd - 28th)"
     else:
-        current_week = "Week V (29th - End of Month)"
+        current_week = "Week-5 (29th - End of Month)"
 
     # Assign values to the context (used in Jinja templates)
     context.current_month = today.strftime("%B")  # Example: "March"
@@ -301,6 +301,8 @@ def create_asn(data):
         if not file_doc:
             frappe.throw(_("Invalid file URL"))
 
+    supplied_qty_tracker = {}
+
     # Add ASN items
     if "items" in data and isinstance(data["items"], list):
         for item in data["items"]:
@@ -315,6 +317,26 @@ def create_asn(data):
             # Fetch item name
             item_name = frappe.get_value("Item", item_code, "item_name")
             uom = frappe.get_value("Purchase Order Item",{"parent": purchase_order, "item_code": item_code},"uom")
+
+            existing_supplied_qty = frappe.db.sql("""
+                SELECT SUM(supplied_quantity) 
+                FROM `tabASN Items`
+                WHERE parentfield = 'items' 
+                AND item_code = %s 
+                AND month = %s 
+                AND year = %s 
+                AND week = %s
+            """, (item_code, month, year, current_week))[0][0] or 0
+
+            # Calculate total supplied quantity including the current entry
+            total_supplied_qty = existing_supplied_qty + supplied_qty
+
+            # Check if total supplied quantity exceeds week_qty
+            if total_supplied_qty > week_qty:
+                frappe.throw(
+                    _("Total supplied quantity ({}) exceeds the allowed week quantity ({}) for item: {}")
+                    .format(total_supplied_qty, week_qty, item_code)
+                )
                
             # Append to ASN
             asn.append("items", {
@@ -402,7 +424,7 @@ def fetch_all_scheduled_items():
     # Return a dictionary with filtered results
     return {
         "scheduled_items": scheduled_items,
-        "current_week": current_week_column.replace("_", " ").title(),  # Example: "Week IV"
+        # "current_week": current_week_column.replace("_", " ").title(),  # Example: "Week IV"
         "current_month": current_month,
         "current_year": current_year
     }
