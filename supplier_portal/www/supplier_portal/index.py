@@ -317,6 +317,7 @@ def create_asn(data):
             # Fetch item name
             item_name = frappe.get_value("Item", item_code, "item_name")
             uom = frappe.get_value("Purchase Order Item",{"parent": purchase_order, "item_code": item_code},"uom")
+            supplier = frappe.get_value("Purchase Order",{"name": purchase_order, "item_code": item_code},"uom")
 
             existing_supplied_qty = frappe.db.sql("""
                 SELECT SUM(supplied_quantity) 
